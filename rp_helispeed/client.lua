@@ -7,7 +7,12 @@ local upkey = 172 -- CHANGE THIS TO WHATEVER TO ACCELERATE
 local downkey = 173 -- CHANGE THIS TO WHATEVER TO ACCELERATE DOWN
 local id = nil
 local speed = 0.05
--- This is the thread that does it all!!
+
+RegisterNetEvent('SyncClient')
+AddEventHandler('SyncClient', function(id, speed)
+	id = id
+	speed = speed
+end)
 
 Citizen.CreateThread(function()
     while true do
@@ -22,25 +27,23 @@ Citizen.CreateThread(function()
 			speed = speed - 0.05
 			TriggerServerEvent('SyncSpeed', id, speed)
         end
-            if speed > 1.0 then speed = 1.0 end
-            if speed < 0.0 then speed = 0.0 end
-                ShowText(tostring(speed), {255, 255, 255, 255}, 0.11, 0.8852, 0.43)
-                DrawRect(0.133, 0.9, 0.046, 0.03, 0, 0, 0, 150)
-            end
-        if not IsPedInAnyHeli(PlayerPedId()) then 
-			speed = 0.05 
-		end
-		SetHeliBladesSpeed(veh, speed)
-		--print(speed)
+        if speed > 1.0 then speed = 1.0 end
+        if speed < 0.0 then speed = 0.0 end
+            ShowText(tostring(speed), {255, 255, 255, 255}, 0.11, 0.8852, 0.43)
+            DrawRect(0.133, 0.9, 0.046, 0.03, 0, 0, 0, 150)
+        end
     end
 end)
 
-RegisterNetEvent('SyncClient')
-AddEventHandler('SyncClient', function(id, speed)
-	speed = speed
-	veh = NetworkGetEntityFromNetworkId(id)
-	id = veh
-	SetHeliBladesSpeed(veh, speed)
+Citizen.CreateThread(function()
+    while true do
+    Citizen.Wait(0)
+		veh = NetworkGetEntityFromNetworkId(id)
+		SetHeliBladesSpeed(veh, speed)
+		if not IsPedInAnyHeli(PlayerPedId()) then 
+			speed = 0.05 
+		end
+    end
 end)
 
 -- Functions that shows the speed string
