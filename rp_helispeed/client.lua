@@ -48,22 +48,3 @@ function ShowText(text, color, x, y, size)
     EndTextCommandDisplayText(x, y)
     DrawRect(0.133, 0.9, 0.046, 0.03, 0, 0, 0, 150)
 end
-
-Citizen.CreateThread(function()
-    while true do
-        Citizen.Wait(0)
-		SetDispatchTimeBetweenSpawnAttempts(2, 0)
-		SetDispatchTimeBetweenSpawnAttemptsMultiplier(2, 0)
-		RemoveMultiplayerBankCash()
-		RemoveMultiplayerHudCash()
-		RemoveMultiplayerWalletCash()
-		SetAmbientPedRangeMultiplierThisFrame(1.0)
-		SetPedDensityMultiplierThisFrame(1.0, 1.0)
-		SetScenarioPedDensityMultiplierThisFrame(1.0, 1.0)
-		SetAmbientVehicleRangeMultiplierThisFrame(1.0)
-		SetParkedVehicleDensityMultiplierThisFrame(1.0)
-		SetRandomVehicleDensityMultiplierThisFrame(1.0)
-		SetVehicleDensityMultiplierThisFrame(1.0)
-		
-	end
-end)
