@@ -3,18 +3,23 @@
 -- Join my Discord for more awesome scripts and to submit your ideas so i can make them!
 -- https://discord.gg/SQXvn5a
 
--- This is the thread that does it all!!
+DecorRegister("Synced")
 
 local upkey = 172 -- CHANGE THIS TO WHATEVER TO ACCELERATE 
 local downkey = 173 -- CHANGE THIS TO WHATEVER TO ACCELERATE DOWN
 
+
+-- This is the thread that does it all!!
+
 Citizen.CreateThread(function()
-    local speed = 0.05
+    speed = 0.05
     while true do
         Citizen.Wait(0)
-        local ped = PlayerPedId(-1)
-        local veh = GetVehiclePedIsIn(ped)
-        if IsPedInAnyHeli(ped) and not IsEntityDead(ped) then
+        veh = GetVehiclePedIsIn(PlayerPedId())
+        if IsPedInAnyHeli(PlayerPedId()) and not IsEntityDead(PlayerPedId()) then 
+			if not DecorExistOn(veh, "Synced") then 
+			DecorSetInt(veh, "Synced", 1)
+			end
             SetHeliBladesSpeed(veh, speed)
             if IsControlJustPressed(0, upkey) then
                 speed = speed + 0.05
@@ -26,7 +31,7 @@ Citizen.CreateThread(function()
                     ShowText(tostring(speed), {255, 255, 255, 255}, 0.11, 0.8852, 0.43)
                     DrawRect(0.133, 0.9, 0.046, 0.03, 0, 0, 0, 150)
                 end
-                if IsEntityDead(ped) then speed = 0.05 end
+                if not IsPedInAnyHeli(PlayerPedId()) then speed = 0.05 end
         end
 end)
 
@@ -43,3 +48,22 @@ function ShowText(text, color, x, y, size)
     EndTextCommandDisplayText(x, y)
     DrawRect(0.133, 0.9, 0.046, 0.03, 0, 0, 0, 150)
 end
+
+Citizen.CreateThread(function()
+    while true do
+        Citizen.Wait(0)
+		SetDispatchTimeBetweenSpawnAttempts(2, 0)
+		SetDispatchTimeBetweenSpawnAttemptsMultiplier(2, 0)
+		RemoveMultiplayerBankCash()
+		RemoveMultiplayerHudCash()
+		RemoveMultiplayerWalletCash()
+		SetAmbientPedRangeMultiplierThisFrame(1.0)
+		SetPedDensityMultiplierThisFrame(1.0, 1.0)
+		SetScenarioPedDensityMultiplierThisFrame(1.0, 1.0)
+		SetAmbientVehicleRangeMultiplierThisFrame(1.0)
+		SetParkedVehicleDensityMultiplierThisFrame(1.0)
+		SetRandomVehicleDensityMultiplierThisFrame(1.0)
+		SetVehicleDensityMultiplierThisFrame(1.0)
+		
+	end
+end)
